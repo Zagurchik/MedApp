@@ -1,0 +1,105 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head><meta charset="UTF-8"><title>Калькуляторы — СКФ и КК</title></head>
+<body style="max-width:1000px;margin:24px auto;font-family:sans-serif;">
+<!-- NAV -->
+<div style="background:#f5f5f5;border-bottom:1px solid #ddd;padding:10px 16px;display:flex;gap:14px;align-items:center;">
+  <b>MedApp</b>
+  <a href="/calc"><b>Калькуляторы</b></a>
+  <a href="/">Препараты</a>
+  <span style="margin-left:auto;opacity:.7;">Локально · офлайн</span>
+</div>
+
+<h1 style="margin-top:16px;">СКФ (CKD-EPI 2021) + КК (Cockcroft–Gault)</h1>
+
+<div style="display:flex;gap:16px;">
+  <!-- Левое меню -->
+  <div style="width:280px;border:1px solid #ddd;border-radius:8px;padding:12px;">
+    <h3 style="margin-top:0;">Список</h3>
+    <ul>
+      <li><a href="/calc/bmi">ИМТ (BMI)</a></li>
+      <li><b>СКФ + КК </b></li>
+    </ul>
+  </div>
+
+  <!-- Форма и результат -->
+  <div style="flex:1;border:1px solid #ddd;border-radius:8px;padding:12px;">
+    <h3 style="margin-top:0;">Ввод параметров</h3>
+
+    <form th:action="@{/calc/renal}" method="post"
+          style="display:grid;grid-template-columns:220px 220px;gap:12px;align-items:center;">
+      <label>Возраст, лет<br>
+        <input name="age" th:value="${age}" required inputmode="decimal">
+      </label>
+
+      <label>Пол<br>
+        <label style="font-weight:normal;">
+          <input type="radio" name="sex" value="female" th:checked="${sex}=='female'"> Женщина
+        </label>
+        <label style="margin-left:14px;font-weight:normal;">
+          <input type="radio" name="sex" value="male" th:checked="${sex}=='male'"> Мужчина
+        </label>
+      </label>
+
+      <label>Вес, кг<br>
+        <input name="weightKg" th:value="${weightKg}" inputmode="decimal" placeholder="для КК (необязательно)">
+      </label>
+
+      <label>Креатинин<br>
+        <div style="display:flex;gap:6px;align-items:center;">
+          <input name="scrValue" th:value="${scrValue}" required inputmode="decimal" style="flex:1;">
+          <select name="scrUnit" th:value="${scrUnit}">
+            <option value="umol">мкмоль/л</option>
+            <option value="mgdl">мг/дл</option>
+          </select>
+        </div>
+      </label>
+
+      <div><button type="submit">Рассчитать</button></div>
+    </form>
+
+    <div th:if="${egfr != null}" style="margin-top:16px;padding:10px;border:1px solid #cce;border-radius:6px;background:#f7faff;">
+      <div style="display:flex;gap:24px;flex-wrap:wrap;">
+        <div>СКФ (CKD-EPI 2021): <b th:text="${egfr}">0.0</b> мл/мин/1.73 м²</div>
+        <div>Стадия ХБП: <b th:text="${ckdStage}">G?</b> <span style="opacity:.7;">(<span th:text="${ckdStageRange}">—</span>)</span></div>
+      </div>
+
+      <div style="margin-top:8px;">
+        <span>КК (Cockcroft–Gault): </span>
+        <b th:if="${crcl != null}" th:text="${crcl}">0.0</b>
+        <span th:if="${crcl != null}"> мл/мин</span>
+        <span th:if="${crcl == null}" style="opacity:.7;" th:text="${crclNote}">Введите вес для расчёта КК</span>
+      </div>
+    </div>
+
+      <div style="font-size:12px;opacity:.8;margin-top:10px;">
+        Примечание: CKD-EPI 2021 (без «расы»), CrCl — по Cockcroft–Gault. SCr в мг/дл; при выборе мкмоль/л выполняется пересчёт (делим на 88.4).
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+    function copyRenalLine() {
+      const el = document.getElementById('renalLine');
+      const text = el.value;
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(showCopied).catch(()=>fallbackCopy(el));
+      } else {
+        fallbackCopy(el);
+      }
+    }
+    function fallbackCopy(inputEl){
+      inputEl.select();
+      inputEl.setSelectionRange(0, 99999);
+      try { document.execCommand('copy'); } catch(e) {}
+      showCopied();
+    }
+    function showCopied(){
+      const hint = document.getElementById('copyHint');
+      hint.style.display = 'inline';
+      setTimeout(()=>{ hint.style.display = 'none'; }, 1500);
+    }
+  </script>
+</body>
+</html>

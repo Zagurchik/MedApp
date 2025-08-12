@@ -1,0 +1,24 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head><meta charset="UTF-8"><title>Препараты</title></head>
+<body style="max-width:900px;margin:24px auto;font-family:sans-serif;">
+<h1>Препараты</h1>
+<a href="/calc"><b>Калькуляторы</b></a>
+<form method="get" action="/" style="margin:12px 0;">
+    <input name="q" th:value="${q}" placeholder="поиск по названию" style="width:260px;">
+    <button type="submit">Искать</button>
+    <a href="/meds/new" style="margin-left:12px;">Добавить</a>
+</form>
+
+<table border="1" cellpadding="6" cellspacing="0" style="width:100%;border-collapse:collapse;">
+    <thead><tr><th>Название</th><th>Обновлено</th><th></th></tr></thead>
+    <tbody>
+    <tr th:each="m : ${items}">
+        <td><a th:href="@{|/meds/${m.id}|}" th:text="${m.name}">name</a></td>
+        <td th:text="${#dates.format(new java.util.Date(m.updatedAt), 'yyyy-MM-dd HH:mm')}">date</td>
+        <td><a th:href="@{|/meds/${m.id}/edit|}">Редактировать</a></td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>

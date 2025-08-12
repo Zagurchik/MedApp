@@ -1,0 +1,82 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head><meta charset="UTF-8"><title>Калькуляторы — ИМТ</title></head>
+<body style="max-width:1000px;margin:24px auto;font-family:sans-serif;">
+<!-- NAV -->
+<div style="background:#f5f5f5;border-bottom:1px solid #ddd;padding:10px 16px;display:flex;gap:14px;align-items:center;">
+  <b>MedApp</b>
+  <a href="/calc"><b>Калькуляторы</b></a>
+  <a href="/">Препараты</a>
+  <span style="margin-left:auto;opacity:.7;">Локально · офлайн</span>
+</div>
+
+<h1 style="margin-top:16px;">Калькуляторы</h1>
+<div style="display:flex;gap:16px;">
+  <!-- Левое меню -->
+  <div style="width:280px;border:1px solid #ddd;border-radius:8px;padding:12px;">
+    <h3 style="margin-top:0;">Список</h3>
+    <ul>
+      <li><b>ИМТ (BMI)</b></li>
+      <li><a href="/calc/renal">СКФ + КК </a></li>
+    </ul>
+  </div>
+
+  <!-- Форма и результат -->
+  <div style="flex:1;border:1px solid #ddd;border-radius:8px;padding:12px;">
+    <h3 style="margin-top:0;">Индекс массы тела (BMI)</h3>
+
+    <form th:action="@{/calc/bmi}" method="post"
+          style="display:grid;grid-template-columns:220px 220px;gap:12px;align-items:center;">
+      <label>Вес, кг<br>
+        <input name="weightKg" th:value="${weightKg}" required inputmode="decimal">
+      </label>
+      <label>Рост, см<br>
+        <input name="heightCm" th:value="${heightCm}" required inputmode="decimal">
+      </label>
+      <div><button type="submit">Рассчитать</button></div>
+    </form>
+
+    <div th:if="${bmi != null}" style="margin-top:16px;padding:10px;border:1px solid #cce;border-radius:6px;background:#f7faff;">
+      ИМТ: <b th:text="${bmi}">0.0</b>
+      <span style="margin-left:8px;opacity:.8;" th:text="${category}">—</span>
+
+      <div style="margin-top:10px;">
+        <div style="display:flex;gap:8px;align-items:center;">
+          <input id="bmiLine" type="text" th:value="${resultLine}" readonly
+                 style="flex:1;padding:6px;border:1px solid #ccd;border-radius:6px;">
+          <button type="button" onclick="copyBmiLine()">Копировать</button>
+        </div>
+        <div id="copyHint" style="font-size:12px;opacity:.7;margin-top:6px;display:none;">Скопировано ✅</div>
+      </div>
+
+      <div style="font-size:12px;opacity:.8;margin-top:10px;">
+        Формула: вес(кг) / (рост(м))².
+      </div>
+    </div>
+    </div>
+  </div>
+</div>
+<script>
+function copyBmiLine() {
+  const el = document.getElementById('bmiLine');
+  const text = el.value;
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).then(showCopied).catch(()=>fallbackCopy(el));
+  } else {
+    fallbackCopy(el);
+  }
+}
+function fallbackCopy(inputEl){
+  inputEl.select();
+  inputEl.setSelectionRange(0, 99999);
+  try { document.execCommand('copy'); } catch(e) {}
+  showCopied();
+}
+function showCopied(){
+  const hint = document.getElementById('copyHint');
+  hint.style.display = 'inline';
+  setTimeout(()=>{ hint.style.display = 'none'; }, 1500);
+}
+</script>
+</body>
+</html>

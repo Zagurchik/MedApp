@@ -1,0 +1,177 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head><meta charset="UTF-8"><title>Редактор</title></head>
+<body style="max-width:900px;margin:24px auto;font-family:sans-serif;">
+<a href="/calc"><b>Калькуляторы</b></a>
+<h1 th:text="${m.id}==null ? 'Новый препарат' : 'Редактирование'"></h1>
+
+<form th:action="${m.id}==null ? @{/meds} : @{'/meds/' + ${m.id}}" method="post" >
+  <div th:if="${m.id} != null" style="opacity:.7;">
+    ID: <span th:text="${m.id}"></span>
+  </div>
+  <div style="margin-top:8px;">
+    <label>Название препарата:</label><br>
+    <input name="name" th:value="${m.name}" required style="width:400px;">
+  </div>
+
+  <div style="margin-top:8px;">
+    <label>Дозировки (в каких выпускается):</label><br>
+    <textarea name="dosages" rows="3" style="width:100%;" th:text="${m.dosages}"></textarea>
+  </div>
+
+  <!-- Почки (вкладки с категориями КК) -->
+  <h2 style="margin-top:16px;">Почки</h2>
+
+  <style>
+.tabs { display:flex; gap:8px; margin:8px 0; flex-wrap:wrap; }
+.tab { padding:6px 10px; border:1px solid #888; border-radius:6px; cursor:pointer; }
+.tab.active { background:#eef; border-color:#55f; }
+.tabpane { display:none; border:1px solid #ddd; padding:10px; border-radius:6px; }
+.tabpane.active { display:block; }
+.row { display:flex; gap:12px; align-items:center; margin:8px 0; flex-wrap:wrap; }
+.row input[type="text"] { width:200px; }
+.note { color:#666; font-size: 12px; }
+</style>
+
+  <div class="tabs" id="renalTabs">
+    <div class="tab active" data-pane="gte60">КК ≥ 60</div>
+    <div class="tab" data-pane="30to60">КК 30–60</div>
+    <div class="tab" data-pane="10to30">КК 10–30</div>
+    <div class="tab" data-pane="lt10">КК &lt; 10</div>
+    <div class="tab" data-pane="hd">Гемодиализ</div>
+  </div>
+
+  <div id="renalPanes">
+    <!-- ≥60 -->
+    <div class="tabpane active" id="pane-gte60">
+      <label><input type="checkbox" name="renalGte60NoAdjust"
+                    th:checked="${m.renalGte60NoAdjust}"> Не корректируется</label>
+      <div class="row">
+        <label>Начальная:</label>
+        <input type="text" name="renalGte60Init" th:value="${m.renalGte60Init}" placeholder="напр. 500 мг 3 р/сут"
+               th:disabled="${m.renalGte60NoAdjust}">
+        <label>Макс.:</label>
+        <input type="text" name="renalGte60Max" th:value="${m.renalGte60Max}" placeholder="напр. до 3 г/сут"
+               th:disabled="${m.renalGte60NoAdjust}">
+      </div>
+    </div>
+
+    <!-- 30–60 -->
+    <div class="tabpane" id="pane-30to60">
+      <label><input type="checkbox" name="renal30to60NoAdjust"
+                    th:checked="${m.renal30to60NoAdjust}"> Не корректируется</label>
+      <div class="row">
+        <label>Начальная:</label>
+        <input type="text" name="renal30to60Init" th:value="${m.renal30to60Init}" th:disabled="${m.renal30to60NoAdjust}">
+        <label>Макс.:</label>
+        <input type="text" name="renal30to60Max" th:value="${m.renal30to60Max}" th:disabled="${m.renal30to60NoAdjust}">
+      </div>
+    </div>
+
+    <!-- 10–30 -->
+    <div class="tabpane" id="pane-10to30">
+      <label><input type="checkbox" name="renal10to30NoAdjust"
+                    th:checked="${m.renal10to30NoAdjust}"> Не корректируется</label>
+      <div class="row">
+        <label>Начальная:</label>
+        <input type="text" name="renal10to30Init" th:value="${m.renal10to30Init}" th:disabled="${m.renal10to30NoAdjust}">
+        <label>Макс.:</label>
+        <input type="text" name="renal10to30Max" th:value="${m.renal10to30Max}" th:disabled="${m.renal10to30NoAdjust}">
+      </div>
+    </div>
+
+    <!-- <10 -->
+    <div class="tabpane" id="pane-lt10">
+      <label><input type="checkbox" name="renalLt10NoAdjust"
+                    th:checked="${m.renalLt10NoAdjust}"> Не корректируется</label>
+      <div class="row">
+        <label>Начальная:</label>
+        <input type="text" name="renalLt10Init" th:value="${m.renalLt10Init}" th:disabled="${m.renalLt10NoAdjust}">
+        <label>Макс.:</label>
+        <input type="text" name="renalLt10Max" th:value="${m.renalLt10Max}" th:disabled="${m.renalLt10NoAdjust}">
+      </div>
+    </div>
+
+    <!-- Гемодиализ -->
+    <div class="tabpane" id="pane-hd">
+      <label><input type="checkbox" name="renalHdNoAdjust"
+                    th:checked="${m.renalHdNoAdjust}"> Не корректируется</label>
+      <div class="row">
+        <label>Начальная:</label>
+        <input type="text" name="renalHdInit" th:value="${m.renalHdInit}" th:disabled="${m.renalHdNoAdjust}">
+        <label>Макс.:</label>
+        <input type="text" name="renalHdMax" th:value="${m.renalHdMax}" th:disabled="${m.renalHdNoAdjust}">
+      </div>
+    </div>
+  </div>
+
+  <div class="note">Подсказка: отметь «Не корректируется», если для категории КК дозировка не меняется. Иначе укажи начальную и максимальную дозу.</div>
+
+  <!-- Опционально — общее примечание по почкам -->
+  <div style="margin-top:8px;">
+    <label>Примечание по почкам (необязательно):</label><br>
+    <textarea name="renal" rows="2" style="width:100%;" th:text="${m.renal}"></textarea>
+  </div>
+  <script>
+  // Простейшие вкладки и отключение полей при "не корректируется"
+  (function(){
+    const tabs = document.querySelectorAll('#renalTabs .tab');
+    const panes = {
+      gte60: document.getElementById('pane-gte60'),
+      '30to60': document.getElementById('pane-30to60'),
+      '10to30': document.getElementById('pane-10to30'),
+      lt10: document.getElementById('pane-lt10'),
+      hd: document.getElementById('pane-hd')
+    };
+    tabs.forEach(t => t.addEventListener('click', () => {
+      tabs.forEach(x => x.classList.remove('active'));
+      Object.values(panes).forEach(p => p.classList.remove('active'));
+      t.classList.add('active');
+      const pane = panes[t.dataset.pane];
+      if (pane) pane.classList.add('active');
+    }));
+
+    // Переключение блокировки полей по чекбоксам
+    function bindBlock(paneId, checkboxName, inputs){
+      const p = document.getElementById(paneId);
+      if(!p) return;
+      const cb = p.querySelector(input[name="${checkboxName}"]);
+      function apply(){
+        const disabled = cb.checked;
+        inputs.forEach(n => {
+          const el = p.querySelector(input[name="${n}"]);
+          if (el) el.disabled = disabled;
+        });
+      }
+      if(cb){ cb.addEventListener('change', apply); apply(); }
+    }
+    bindBlock('pane-gte60', 'renalGte60NoAdjust', ['renalGte60Init','renalGte60Max']);
+    bindBlock('pane-30to60','renal30to60NoAdjust',['renal30to60Init','renal30to60Max']);
+    bindBlock('pane-10to30','renal10to30NoAdjust',['renal10to30Init','renal10to30Max']);
+    bindBlock('pane-lt10', 'renalLt10NoAdjust', ['renalLt10Init','renalLt10Max']);
+    bindBlock('pane-hd',   'renalHdNoAdjust',   ['renalHdInit','renalHdMax']);
+  })();
+</script>
+
+  <div style="margin-top:8px;">
+    <label>Печень (коррекция/влияние):</label><br>
+    <textarea name="hepatic" rows="3" style="width:100%;" th:text="${m.hepatic}"></textarea>
+  </div>
+
+  <div style="margin-top:8px;">
+    <label>Пожилые:</label><br>
+    <textarea name="elderly" rows="3" style="width:100%;" th:text="${m.elderly}"></textarea>
+  </div>
+
+  <div style="margin-top:8px;">
+    <label>Дополнительно:</label><br>
+    <textarea name="extra" rows="3" style="width:100%;" th:text="${m.extra}"></textarea>
+  </div>
+
+  <div style="margin-top:12px;">
+    <button type="submit">Сохранить</button>
+    <a href="/">Отмена</a>
+  </div>
+</form>
+</body>
+</html>

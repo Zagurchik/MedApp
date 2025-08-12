@@ -1,0 +1,70 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head><meta charset="UTF-8"><title th:text="${m.name}">Детали</title></head>
+<body style="max-width:900px;margin:24px auto;font-family:sans-serif;">
+<a href="/calc"><b>Калькуляторы</b></a>
+<a href="/">&larr; Назад</a>
+<h1 th:text="${m.name}">Название</h1>
+<p><b>ID:</b> <span th:text="${m.id}"></span></p>
+<p><b>Обновлено:</b> <span th:text="${#dates.format(new java.util.Date(m.updatedAt), 'yyyy-MM-dd HH:mm')}"></span></p>
+
+<h3>Дозировки</h3>
+<pre th:text="${m.dosages}">—</pre>
+
+<h3>Почки — коррекция доз</h3>
+<table border="1" cellpadding="6" cellspacing="0" style="border-collapse:collapse;width:100%;">
+  <thead>
+  <tr><th>Категория</th><th>Схема</th></tr>
+  </thead>
+  <tbody>
+  <tr>
+    <td>КК ≥ 60</td>
+    <td th:text="${m.renalGte60NoAdjust} ? 'Не корректируется'
+                   : ( (m.renalGte60Init?:'') + ( (m.renalGte60Max!=null && m.renalGte60Max!='') ? ('; макс: '+m.renalGte60Max) : '' ) )">—</td>
+  </tr>
+  <tr>
+    <td>КК 30–60</td>
+    <td th:text="${m.renal30to60NoAdjust} ? 'Не корректируется'
+                   : ( (m.renal30to60Init?:'') + ( (m.renal30to60Max!=null && m.renal30to60Max!='') ? ('; макс: '+m.renal30to60Max) : '' ) )">—</td>
+  </tr>
+  <tr>
+    <td>КК 10–30</td>
+    <td th:text="${m.renal10to30NoAdjust} ? 'Не корректируется'
+                   : ( (m.renal10to30Init?:'') + ( (m.renal10to30Max!=null && m.renal10to30Max!='') ? ('; макс: '+m.renal10to30Max) : '' ) )">—</td>
+  </tr>
+  <tr>
+    <td>КК &lt; 10</td>
+    <td th:text="${m.renalLt10NoAdjust} ? 'Не корректируется'
+                   : ( (m.renalLt10Init?:'') + ( (m.renalLt10Max!=null && m.renalLt10Max!='') ? ('; макс: '+m.renalLt10Max) : '' ) )">—</td>
+  </tr>
+  <tr>
+    <td>Гемодиализ</td>
+    <td th:text="${m.renalHdNoAdjust} ? 'Не корректируется'
+                   : ( (m.renalHdInit?:'') + ( (m.renalHdMax!=null && m.renalHdMax!='') ? ('; макс: '+m.renalHdMax) : '' ) )">—</td>
+  </tr>
+  </tbody>
+</table>
+
+<div th:if="${m.renal!=null && m.renal!=''}" style="margin-top:8px;">
+  <b>Примечание по почкам:</b>
+  <pre th:text="${m.renal}">—</pre>
+</div>
+
+<h3>Печень</h3>
+<pre th:text="${m.hepatic}">—</pre>
+
+<h3>Пожилые</h3>
+<pre th:text="${m.elderly}">—</pre>
+
+<h3>Дополнительно</h3>
+<pre th:text="${m.extra}">—</pre>
+
+<p style="margin-top:12px;">
+  <a th:href="@{|/meds/${m.id}/edit|}">Редактировать</a>
+<form th:action="@{|/meds/${m.id}/delete|}" method="post" style="display:inline;margin-left:12px;"
+      onsubmit="return confirm('Удалить запись?');">
+  <button type="submit">Удалить</button>
+</form>
+</p>
+</body>
+</html>
