@@ -1,6 +1,10 @@
 <!doctype html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head><meta charset="UTF-8"><title>Редактор</title></head>
+<head>
+  <meta charset="UTF-8">
+  <title>Редактор</title>
+  <link rel="stylesheet" th:href="@{/style.css}">
+</head>
 <body style="max-width:900px;margin:24px auto;font-family:sans-serif;">
 <a href="/calc"><b>Калькуляторы</b></a>
 <h1 th:text="${m.id}==null ? 'Новый препарат' : 'Редактирование'"></h1>
@@ -22,16 +26,6 @@
   <!-- Почки (вкладки с категориями КК) -->
   <h2 style="margin-top:16px;">Почки</h2>
 
-  <style>
-.tabs { display:flex; gap:8px; margin:8px 0; flex-wrap:wrap; }
-.tab { padding:6px 10px; border:1px solid #888; border-radius:6px; cursor:pointer; }
-.tab.active { background:#eef; border-color:#55f; }
-.tabpane { display:none; border:1px solid #ddd; padding:10px; border-radius:6px; }
-.tabpane.active { display:block; }
-.row { display:flex; gap:12px; align-items:center; margin:8px 0; flex-wrap:wrap; }
-.row input[type="text"] { width:200px; }
-.note { color:#666; font-size: 12px; }
-</style>
 
   <div class="tabs" id="renalTabs">
     <div class="tab active" data-pane="gte60">КК ≥ 60</div>
