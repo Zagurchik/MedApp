@@ -1,0 +1,47 @@
+.tabs {
+  display: flex;
+  gap: 8px;
+  margin: 8px 0;
+  flex-wrap: wrap;
+}
+
+.tab {
+  padding: 6px 10px;
+  border: 1px solid #b2dfdb;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.tab.active {
+  background: #e0f2f1;
+  border-color: #b2dfdb;
+}
+
+.tabpane {
+  display: none;
+  border: 1px solid #b2dfdb;
+  padding: 10px;
+  border-radius: 6px;
+  background: #e0f2f1;
+}
+
+.tabpane.active {
+  display: block;
+}
+
+.row {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  margin: 8px 0;
+  flex-wrap: wrap;
+}
+
+.row input[type="text"] {
+  width: 200px;
+}
+
+.note {
+  color: #666;
+  font-size: 12px;
+}
