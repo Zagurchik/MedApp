@@ -1,9 +1,13 @@
 <!doctype html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head><meta charset="UTF-8"><title>Препараты</title></head>
+<head>
+<meta charset="UTF-8">
+<title>Препараты</title>
+<link rel="stylesheet" th:href="@{/style.css}">
+</head>
 <body style="max-width:900px;margin:24px auto;font-family:sans-serif;">
+<div th:replace="fragments/nav :: nav"></div>
 <h1>Препараты</h1>
-<a href="/calc"><b>Калькуляторы</b></a>
 <form method="get" action="/" style="margin:12px 0;">
     <input name="q" th:value="${q}" placeholder="поиск по названию" style="width:260px;">
     <button type="submit">Искать</button>
