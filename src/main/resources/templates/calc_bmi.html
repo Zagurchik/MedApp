@@ -1,14 +1,18 @@
 <!doctype html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head><meta charset="UTF-8"><title>Калькуляторы — ИМТ</title></head>
-<body style="max-width:1000px;margin:24px auto;font-family:sans-serif;">
+<head>
+  <meta charset="UTF-8">
+  <title>Калькуляторы — ИМТ</title>
+  <link th:href="@{/css/style.css}" rel="stylesheet">
+</head>
+<body>
 <!-- NAV -->
-<div style="background:#f5f5f5;border-bottom:1px solid #ddd;padding:10px 16px;display:flex;gap:14px;align-items:center;">
+<nav>
   <b>MedApp</b>
   <a href="/calc"><b>Калькуляторы</b></a>
   <a href="/">Препараты</a>
   <span style="margin-left:auto;opacity:.7;">Локально · офлайн</span>
-</div>
+</nav>
 
 <h1 style="margin-top:16px;">Калькуляторы</h1>
 <div style="display:flex;gap:16px;">

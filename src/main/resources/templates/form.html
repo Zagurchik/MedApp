@@ -1,7 +1,11 @@
 <!doctype html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head><meta charset="UTF-8"><title>Редактор</title></head>
-<body style="max-width:900px;margin:24px auto;font-family:sans-serif;">
+<head>
+  <meta charset="UTF-8">
+  <title>Редактор</title>
+  <link th:href="@{/css/style.css}" rel="stylesheet">
+</head>
+<body>
 <a href="/calc"><b>Калькуляторы</b></a>
 <h1 th:text="${m.id}==null ? 'Новый препарат' : 'Редактирование'"></h1>
 

@@ -1,0 +1,56 @@
+:root {
+  --primary: #a5d6a7;
+  --accent: #81d4fa;
+  --bg: #f1f8e9;
+}
+
+body {
+  margin: 24px auto;
+  max-width: 1000px;
+  font-family: sans-serif;
+  background: var(--bg);
+}
+
+nav {
+  background: var(--primary);
+  border-bottom: 1px solid var(--accent);
+  padding: 10px 16px;
+  display: flex;
+  gap: 14px;
+  align-items: center;
+}
+
+form {
+  border: 1px solid var(--primary);
+  padding: 12px;
+  border-radius: 8px;
+  background: #fff;
+}
+
+button {
+  background: var(--accent);
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+button:hover {
+  opacity: 0.9;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+}
+
+th, td {
+  border: 1px solid var(--primary);
+  padding: 6px;
+}
+
+th {
+  background: var(--primary);
+}
+
