@@ -1,7 +1,11 @@
 <!doctype html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head><meta charset="UTF-8"><title th:text="${m.name}">Детали</title></head>
-<body style="max-width:900px;margin:24px auto;font-family:sans-serif;">
+<head>
+  <meta charset="UTF-8">
+  <title th:text="${m.name}">Детали</title>
+  <link th:href="@{/css/style.css}" rel="stylesheet">
+</head>
+<body>
 <a href="/calc"><b>Калькуляторы</b></a>
 <a href="/">&larr; Назад</a>
 <h1 th:text="${m.name}">Название</h1>
@@ -12,7 +16,7 @@
 <pre th:text="${m.dosages}">—</pre>
 
 <h3>Почки — коррекция доз</h3>
-<table border="1" cellpadding="6" cellspacing="0" style="border-collapse:collapse;width:100%;">
+<table>
   <thead>
   <tr><th>Категория</th><th>Схема</th></tr>
   </thead>

@@ -1,7 +1,11 @@
 <!doctype html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head><meta charset="UTF-8"><title>Препараты</title></head>
-<body style="max-width:900px;margin:24px auto;font-family:sans-serif;">
+<head>
+  <meta charset="UTF-8">
+  <title>Препараты</title>
+  <link th:href="@{/css/style.css}" rel="stylesheet">
+</head>
+<body>
 <h1>Препараты</h1>
 <a href="/calc"><b>Калькуляторы</b></a>
 <form method="get" action="/" style="margin:12px 0;">
@@ -10,7 +14,7 @@
     <a href="/meds/new" style="margin-left:12px;">Добавить</a>
 </form>
 
-<table border="1" cellpadding="6" cellspacing="0" style="width:100%;border-collapse:collapse;">
+<table>
     <thead><tr><th>Название</th><th>Обновлено</th><th></th></tr></thead>
     <tbody>
     <tr th:each="m : ${items}">
