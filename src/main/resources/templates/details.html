@@ -1,8 +1,12 @@
 <!doctype html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head><meta charset="UTF-8"><title th:text="${m.name}">Детали</title></head>
+<head>
+<meta charset="UTF-8">
+<title th:text="${m.name}">Детали</title>
+<link rel="stylesheet" th:href="@{/style.css}">
+</head>
 <body style="max-width:900px;margin:24px auto;font-family:sans-serif;">
-<a href="/calc"><b>Калькуляторы</b></a>
+<div th:replace="fragments/nav :: nav"></div>
 <a href="/">&larr; Назад</a>
 <h1 th:text="${m.name}">Название</h1>
 <p><b>ID:</b> <span th:text="${m.id}"></span></p>
